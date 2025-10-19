@@ -2,6 +2,7 @@
   become: true
 
   tasks:
+<<<<<<< HEAD
     - name: Add deadsnakes PPA for installing Python 3.12
       apt_repository:
         repo: ppa:deadsnakes/ppa
@@ -9,8 +10,13 @@
         update_cache: yes
 
     - name: Update the system and install Python 3.12 and dependencies
+=======
+    - name: Update the system and install Python and dependencies
+>>>>>>> feature/practicandogit_a
       apt:
+        update_cache: yes
         name:
+<<<<<<< HEAD
           - python3.12
           - python3.12-venv
           - mariadb-client
@@ -31,15 +37,42 @@
 
     - name: Set up the Python 3.12 virtual environment
       command: python3.12 -m venv {{ working_dir }}/vagrant_venv
+=======
+          - python3
+          - python3-pip
+          - python3-venv
+          - mariadb-client
+        state: present
+
+    - name: Ensure venv module is installed
+      apt:
+        name: python3-venv
+        state: present
+
+    - name: Remove existing virtual environment if it exists
+      file:
+        path: "{{ working_dir }}venv"
+        state: absent
+        force: yes
+
+    - name: Set up the Python virtual environment
+      command: python3 -m venv {{ working_dir }}venv
+>>>>>>> feature/practicandogit_a
       args:
         creates: "{{ working_dir }}/vagrant_venv/bin/activate"
 
     - name: Activate the virtual environment and install dependencies
       shell: |
+<<<<<<< HEAD
         source {{ working_dir }}/vagrant_venv/bin/activate
         pip install --upgrade pip
         cd {{ working_dir }}
         pip install -r requirements.txt
         pip install -e ./
+=======
+        source {{ working_dir }}venv/bin/activate
+        pip install -r {{ working_dir }}requirements.txt
+        pip install -e {{ working_dir }}
+>>>>>>> feature/practicandogit_a
       args:
         executable: /bin/bash
