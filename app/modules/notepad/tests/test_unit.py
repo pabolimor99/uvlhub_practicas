@@ -1,5 +1,8 @@
 import pytest
-
+from types import SimpleNamespace
+from app.modules.notepad.models import Notepad
+from app.modules.notepad.services import NotepadService
+from unittest.mock import MagicMock
 
 @pytest.fixture(scope='module')
 def test_client(test_client):
@@ -14,11 +17,34 @@ def test_client(test_client):
     yield test_client
 
 
-def test_sample_assertion(test_client):
+
+def test_notepad_service_delete_success():
+
+    service = NotepadService()
+    fake_repo = MagicMock()
+    service.repository = fake_repo
+    fake_repo.delete.return_value = True
+
+    ok = service.delete(123)
+
+    assert ok is True
+    fake_repo.delete.assert_called_once_with(123)
+
+def test_notepad_service_delete_failure():
+    
+    service = NotepadService()
+    fake_repo = MagicMock()
+    service.repository = fake_repo
+    fake_repo.delete.return_value = False
+
+    ok = service.delete(999)
+
+    assert ok is False
+    fake_repo.delete.assert_called_once_with(999)
+
+def test_sample_assertion():
     """
-    Sample test to verify that the test framework and environment are working correctly.
-    It does not communicate with the Flask application; it only performs a simple assertion to
-    confirm that the tests in this module can be executed.
+    Igual que en el tutorial: un aserto simple para verificar el entorno de tests.
     """
     greeting = "Hello, World!"
-    assert greeting == "Hello, World!", "The greeting does not coincide with 'Hello, World!'"
+    assert greeting == "Hello, World!"
