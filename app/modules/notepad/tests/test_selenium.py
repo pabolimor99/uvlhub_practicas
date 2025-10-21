@@ -19,3 +19,12 @@ def test_notepad_redirects_to_login(driver):
     host = get_host_for_selenium_testing()
     driver.get(f"{host}/notepad")
     WebDriverWait(driver, 10).until(EC.url_contains("/login"))
+
+if __name__ == "__main__":
+    driver = initialize_driver()
+    try:
+        test_notepad_redirects_to_login(driver)
+    except Exception as e:
+        pass
+    finally:
+        close_driver(driver)
